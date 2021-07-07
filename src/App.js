@@ -1,64 +1,43 @@
-import React from 'react';
-import DataGrid, { Column, ColumnChooser, ColumnFixing } from 'devextreme-react/data-grid';
-
+import React, {useState} from 'react';
 import service from './data.js';
+import Table from "./components/Table";
+import WrapperEdit from "./components/WrapperEdit";
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.employees = service.getEmployees();
-  }
-  calculateCellValue(data) {
-    return [data.Title, data.FirstName, data.LastName].join(' ');
-  }
-  render() {
-    return (
-      <DataGrid
-        id="gridContainer"
-        dataSource={this.employees}
-        keyExpr="ID"
-        allowColumnReordering={true}
-        allowColumnResizing={true}
-        columnAutoWidth={true}
-        showBorders={true}
-      >
-        <ColumnChooser enabled={true} />
-        <ColumnFixing enabled={true} />
-        <Column
-          caption="Employee"
-          width={230}
-          fixed={true}
-          calculateCellValue={this.calculateCellValue}
+export const HIDDEN_COLUMN = 'HIDDEN_COLUMN';
+
+
+const App = () => {
+
+    const employees = service.getEmployees();
+    const [mapEmployeesToActiveNameColumns, setMapEmployeesToActiveNameColumns] = useState([
+        {key: "Employee", value: "qweqweq qwe qweqew qweqwe"},
+        {key: "ID", value: "ID"},
+        {key: "Position", value: "Position"},
+        {key: "BirthDate", value: "BirthDate"},
+        {key: "HireDate", value: "HireDate"},
+        {key: "Address", value: "Address"},
+        {key: "City", value: "City"},
+        {key: "State", value: "State"},
+        {key: "Zipcode", value: "Zipcode"},
+        {key: "Email", value: "Email"},
+        {key: "Skype", value: "Skype"},
+        {key: "HomePhone", value: "HomePhone"},
+        {key: "DepartmentID", value: "DepartmentID"},
+        {key: "MobilePhone", value: "MobilePhone"}
+    ])
+
+    return <div>
+        <Table
+            employees={employees}
+            mapEmployeesToActiveNameColumns={mapEmployeesToActiveNameColumns}
         />
-        <Column
-          dataField="BirthDate"
-          dataType="date"
+        <WrapperEdit
+            mapEmployeesToActiveNameColumns={mapEmployeesToActiveNameColumns}
+            setMapEmployeesToActiveNameColumns={setMapEmployeesToActiveNameColumns}
         />
-        <Column
-          dataField="HireDate"
-          dataType="date"
-        />
-        <Column
-          dataField="Position"
-          alignment="right"
-        />
-        <Column
-          dataField="Address"
-          width={230}
-        />
-        <Column dataField="City" />
-        <Column dataField="State" />
-        <Column
-          dataField="Zipcode"
-          visible={false}
-        />
-        <Column dataField="HomePhone" />
-        <Column dataField="MobilePhone" />
-        <Column dataField="Skype" />
-        <Column dataField="Email" />
-      </DataGrid>
-    );
-  }
+    </div>
+
+
 }
 
 export default App;
